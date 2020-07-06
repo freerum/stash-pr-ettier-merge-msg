@@ -1,2 +1,4 @@
-# stash-pr-commit-message
-Chrome extension for auto-update Stash's Pull Request merge commit message with the Pull Request heading
+# Stash PR-ettier Merge Message
+
+Chrome extension that auto-updates Stash's Pull-Request Merge message to the PR's title.
+Makes for prettier repository commit messages.
