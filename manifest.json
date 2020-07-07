@@ -1,12 +1,11 @@
 {
     "name": "Stash PR-ettier Merge Message",
     "description": "Changes Stash's Pull-Request Merge message to the PR's title. Results in prettier repository commit messages",
-    "version": "1.0",
+    "version": "1.1",
     "manifest_version": 2,
-    "permissions": ["declarativeContent", "activeTab"],
     "content_scripts": [
         {
-            "matches": ["https://*/*"],
+            "matches": ["https://*/*pull-requests*"],
             "include_globs": ["https://stash.*/*/pull-requests/*"],
             "run_at": "document_idle",
             "js": ["contentScript.js"]

@@ -6,7 +6,7 @@ const EXTENSION_NAME = 'stash-pr-ettier-merge-message';
  * @param  {...any} rest            The rest of the arguments for console.log
  */
 function log(functionName, ...rest) {
-    console.log(`[${EXTENSION_NAME}] ${functionName}:`, ...rest);
+    // console.log(`[${EXTENSION_NAME}] ${functionName}:`, ...rest);
 }
 
 /**
