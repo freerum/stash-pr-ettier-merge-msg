@@ -69,6 +69,17 @@ function getPullRequestTitle() {
 }
 
 /**
+ * Gets the Merge Button
+ * @returns {Element}
+ */
+function getMergeButton() {
+    const collection = document.getElementsByClassName('merge-button');
+    const mergeButton = collection && collection.length === 1 ? collection[0] : null;
+    log(getMergeButton.name, 'Merge Button:', mergeButton);
+    return mergeButton;
+}
+
+/**
  * Replaces the default merge commit message with the one provided
  * @param {string} message  The merge commit message
  * @param {number} prNumber The Pull Request Number
@@ -93,9 +104,19 @@ function updateMergeMessage(message, prNumber) {
     }
 }
 
+/**
+ * Updates the PR Merge message
+ */
+function onMergeButtonClicked() {
+    // The PR Merge Dialog is already part of the document so we can update it as soon Merge button is clicked
+    // instead of after the Merge dialog is shown.
+    log(onMergeButtonClicked.name, 'Merge Button clicked. Update the PR Merge Commit Message');
+    updateMergeMessage(prTitle, prNumber);
+}
+
 const prTitle = getPullRequestTitle();
 const prNumber = getPullRequestNumber();
-
-// The PR Merge Dialog is already part of the document so we can update it as soon as the page loads
-// instead of after the Merge Button is clicked.
-updateMergeMessage(prTitle, prNumber);
+const mergeButton = getMergeButton();
+if (mergeButton) {
+    mergeButton.addEventListener('click', onMergeButtonClicked);
+}
