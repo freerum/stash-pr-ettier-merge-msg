@@ -91,7 +91,12 @@ function updateMergeMessage(message, prNumber) {
         const prevMessage = prCommitMessage.innerText;
         if (message) {
             const prNumberDesc = prNumber ? ` (PR #${prNumber})` : '';
-            prCommitMessage.innerText = `${message}${prNumberDesc}`;
+            commitMessage = `${message}${prNumberDesc}`;
+            prCommitMessage.innerText = commitMessage;
+
+            // update the 'data-original-value' attribute too so that canceling the merge dialog
+            // and re-opening it won't switch the merge message back to the defualt message.
+            prCommitMessage.setAttribute('data-original-value', commitMessage);
         }
 
         // prettier-ignore
