@@ -17,9 +17,34 @@ function getMergeButton() {
 const mergeButton = getMergeButton();
 if (mergeButton) {
     mergeButton.onclick = function () {
-        const prTitle = getPullRequestTitle();
-        const prNumber = getPullRequestNumber();
-        const prDesc = getPullRequestDescription();
-        updateMergeMessage(prTitle, prNumber, prDesc);
+        const pr = getPR();
+        updateMergeMessage(pr.id, pr.title, pr.description);
     };
+}
+
+/**
+ * Content scripts are isolated from the underlying page, so we have to use the DOM or postMessage in order to
+ * communicate between the two, you can't just read variables (like `require`) directly from the page.
+ *
+ * So to extract the PR information, we inject a script into the page that puts the PR info in the body's dataset.
+ * Then we can read it from the content script and clean it all up.
+ */
+function getPR() {
+    const scriptContent = `
+        (() => {
+            const pr = require('bitbucket/internal/feature/pull-request/store/pull-request-store').getState().pullRequest;
+            document.body.dataset.pr = JSON.stringify(pr);
+        })();
+    `;
+
+    const script = document.createElement('script');
+    script.appendChild(document.createTextNode(scriptContent));
+    document.body.appendChild(script);
+
+    const pr = JSON.parse(document.body.dataset.pr);
+
+    document.body.dataset.pr = undefined;
+    document.body.removeChild(script);
+
+    return pr;
 }

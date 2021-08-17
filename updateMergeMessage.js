@@ -1,14 +1,14 @@
 /**
  * Replaces the default merge commit message with the one provided
- * @param {string} message          The merge commit message
- * @param {number} prNumber         The Pull Request Number
- * @param {string} prDescription    The Pull Request details
+ * @param {string} title          The merge commit message
+ * @param {number} id         The Pull Request Number
+ * @param {string} description    The Pull Request details
  */
-function updateMergeMessage(message, prNumber, prDescription) {
+function updateMergeMessage(id, title, description) {
     const logger = getLogger('updateMergeMessage()');
 
-    if (!message || !prNumber) {
-        logger.error(!prNumber ? errors.PR_MERGE_MSG_PRNUM_PARAM_MISSING : errors.PR_MERGE_MSG_PRMSG_PARAM_MISSING);
+    if (!title || !id) {
+        logger.error(!id ? errors.PR_MERGE_MSG_PR_ID_PARAM_MISSING : errors.PR_MERGE_MSG_PR_TITLE_PARAM_MISSING);
         return;
     }
 
@@ -18,10 +18,8 @@ function updateMergeMessage(message, prNumber, prDescription) {
         return;
     }
 
-    const prNumberDesc = prNumber ? ` (PR #${prNumber})` : '';
-    const commitMessageHeading = `${message}${prNumberDesc}`;
-    const commitMessageBody = prDescription ? `\n\n${prDescription}` : '';
-    const commitMessage = `${commitMessageHeading}${commitMessageBody}`;
+    const titleWithPR = title + (id ? ` (PR #${id})` : '');
+    const commitMessage = titleWithPR + '\n\n' + (description ?? '');
 
     logger.debug('PR Merge Commit Message changed from "', prCommitMessage.textContent, '" to:', commitMessage);
 
