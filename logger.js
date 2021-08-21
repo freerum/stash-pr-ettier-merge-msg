@@ -11,11 +11,11 @@ const errors = {
         message: 'Pull Request title not found.',
         code: 'PR-MSG-03',
     },
-    PR_MERGE_MSG_PRNUM_PARAM_MISSING: {
+    PR_MERGE_MSG_PR_ID_PARAM_MISSING: {
         message: 'Pull Request merge message not updated because of missing PR Number.',
         code: 'PR-MSG-04',
     },
-    PR_MERGE_MSG_PRMSG_PARAM_MISSING: {
+    PR_MERGE_MSG_PR_TITLE_PARAM_MISSING: {
         message: 'Pull Request merge message not updated because of missing PR description.',
         code: 'PR-MSG-05',
     },

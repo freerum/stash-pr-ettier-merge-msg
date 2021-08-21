@@ -8,14 +8,7 @@
             "matches": ["https://stash.corp.netflix.com/*"],
             "include_globs": ["https://stash.*/*/pull-requests/*"],
             "run_at": "document_idle",
-            "js": [
-                "logger.js",
-                "prNumber.js",
-                "prTitle.js",
-                "prDescription.js",
-                "updateMergeMessage.js",
-                "contentScript.js"
-            ]
+            "js": ["logger.js", "updateMergeMessage.js", "contentScript.js"]
         }
     ],
     "icons": {
