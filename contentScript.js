@@ -16,8 +16,8 @@ function getMergeButton() {
 // find the Merge button and listen to its click event to update the merge message
 const mergeButton = getMergeButton();
 if (mergeButton) {
-    mergeButton.onclick = function () {
-        const pr = getPR();
+    mergeButton.onclick = async function () {
+        const pr = await getPR();
         updateMergeMessage(pr.id, pr.title, pr.description);
     };
 }
@@ -29,11 +29,16 @@ if (mergeButton) {
  * So to extract the PR information, we inject a script into the page that puts the PR info in the body's dataset.
  * Then we can read it from the content script and clean it all up.
  */
-function getPR() {
+async function getPR() {
     const scriptContent = `
         (() => {
-            const pr = require('bitbucket/internal/feature/pull-request/store/pull-request-store').getState().pullRequest;
-            document.body.dataset.pr = JSON.stringify(pr);
+            require(["@atlassian/clientside-extensions-registry"], function(b) {
+                b.registerExtension("pr-ettier-merge-message", (a, data) => {
+                    document.body.dataset.pr = JSON.stringify(data.pullRequest);
+                }, {
+                    location: "bitbucket.ui.pullrequest.overview.summary",
+                });
+            });
         })();
     `;
 
@@ -41,10 +46,14 @@ function getPR() {
     script.appendChild(document.createTextNode(scriptContent));
     document.body.appendChild(script);
 
-    const pr = JSON.parse(document.body.dataset.pr);
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const pr = JSON.parse(document.body.dataset.pr);
 
-    document.body.dataset.pr = undefined;
-    document.body.removeChild(script);
+            document.body.dataset.pr = undefined;
+            document.body.removeChild(script);
 
-    return pr;
+            resolve(pr);
+        }, 100);
+    });
 }
